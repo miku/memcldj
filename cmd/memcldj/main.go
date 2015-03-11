@@ -12,7 +12,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/robfig/gomemcache/memcache"
+	"github.com/bradfitz/gomemcache/memcache"
 )
 
 const (
