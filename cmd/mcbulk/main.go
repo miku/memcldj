@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"encoding/json"
 	"flag"
+	"fmt"
 	"io"
 	"log"
 	"os"
@@ -12,6 +13,11 @@ import (
 	"time"
 
 	"github.com/robfig/gomemcache/memcache"
+)
+
+const (
+	version = "1.0"
+	backoff = 50 * time.Millisecond
 )
 
 type options struct {
@@ -44,7 +50,7 @@ func worker(queue chan []string, opts options, wg *sync.WaitGroup) {
 			for i = 1; i < opts.retry; i++ {
 				err = mc.Set(&memcache.Item{Key: id, Value: []byte(line)})
 				if err != nil {
-					pause := 2 << i * 50 * time.Millisecond
+					pause := 2 << i * backoff
 					log.Printf("retry %d for %s in %s ...", i, id, pause)
 					time.Sleep(pause)
 				} else {
@@ -67,8 +73,13 @@ func main() {
 	numWorker := flag.Int("w", runtime.NumCPU(), "number of workers")
 	size := flag.Int("b", 10000, "batch size")
 	verbose := flag.Bool("verbose", false, "be verbose")
+	version := flag.Bool("v", false, "prints current program version")
 
 	flag.Parse()
+
+	if *version {
+		fmt.Println(version)
+	}
 
 	if flag.NArg() < 1 {
 		log.Fatal("input file required")
@@ -109,7 +120,7 @@ func main() {
 		batch = append(batch, line)
 		if i%*size == 0 {
 			if *verbose {
-				log.Printf("inserted %d", i)
+				log.Printf("sent %d", i)
 			}
 			queue <- batch
 			batch = batch[:0]
@@ -118,7 +129,7 @@ func main() {
 	}
 	queue <- batch
 	if *verbose {
-		log.Printf("inserted %d", i)
+		log.Printf("sent %d", i)
 	}
 	close(queue)
 	wg.Wait()
