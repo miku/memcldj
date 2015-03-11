@@ -55,9 +55,10 @@ func worker(queue chan []string, opts options, wg *sync.WaitGroup) {
 				log.Fatalf("unsupported id value type: %v is a %v", val, reflect.TypeOf(val))
 			}
 
-			ok := false
+			var ok bool
 			var i uint
-			for i = 1; i < opts.retry; i++ {
+
+			for i = 1; i <= opts.retry; i++ {
 				err = mc.Set(&memcache.Item{Key: id, Value: []byte(line)})
 				if err != nil {
 					pause := 2 << i * backoff
