@@ -24,3 +24,5 @@ _testmain.go
 *.prof
 
 /memcldj
+memcldj.*deb
+memcldj.*rpm
