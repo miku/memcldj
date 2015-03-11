@@ -5,6 +5,8 @@ Load JSON blobs into memcache or memcachedb quickly. Given an [LDJ](http://en.wi
 file, use a value from inside a JSON document as key and set its value
 to the JSON blob.
 
+Note: Nested keys are not supported.
+
 Installation
 ------------
 
@@ -19,8 +21,8 @@ Usage
     Usage of memcldj:
       -addr="127.0.0.1:11211": hostport of memcache
       -b=10000: batch size
-      -key="id": document key to use a id in dot notation
-      -retry=10: retry set this many times
+      -key="id": key to use
+      -retry=10: retry set operation this many times
       -verbose=false: be verbose
       -w=4: number of workers
 

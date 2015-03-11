@@ -71,8 +71,8 @@ func worker(queue chan []string, opts options, wg *sync.WaitGroup) {
 func main() {
 
 	hostport := flag.String("addr", "127.0.0.1:11211", "hostport of memcache")
-	key := flag.String("key", "id", "document key to use a id in dot notation")
-	retry := flag.Int("retry", 10, "retry set this many times")
+	key := flag.String("key", "id", "key to use")
+	retry := flag.Int("retry", 10, "retry set operation this many times")
 	numWorker := flag.Int("w", runtime.NumCPU(), "number of workers")
 	size := flag.Int("b", 10000, "batch size")
 	verbose := flag.Bool("verbose", false, "be verbose")
