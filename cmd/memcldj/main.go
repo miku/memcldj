@@ -16,7 +16,7 @@ import (
 )
 
 const (
-	version = "1.0"
+	version = "1.0.0"
 	backoff = 50 * time.Millisecond
 )
 
