@@ -24,6 +24,7 @@ type options struct {
 	hostport string
 	key      string
 	retry    uint
+	verbose  bool
 }
 
 func worker(queue chan []string, opts options, wg *sync.WaitGroup) {
@@ -37,11 +38,11 @@ func worker(queue chan []string, opts options, wg *sync.WaitGroup) {
 				log.Fatal(err)
 			}
 			if _, ok := dst[opts.key]; !ok {
-				log.Fatal("key not found")
+				log.Fatalf("key not found: %s", opts.key)
 			}
 			val := dst[opts.key]
 			if _, ok := val.(string); !ok {
-				log.Fatal("id value is not a string")
+				log.Fatalf("id value is not a string: %+v", val)
 			}
 			id := val.(string)
 
@@ -51,7 +52,9 @@ func worker(queue chan []string, opts options, wg *sync.WaitGroup) {
 				err = mc.Set(&memcache.Item{Key: id, Value: []byte(line)})
 				if err != nil {
 					pause := 2 << i * backoff
-					log.Printf("retry %d for %s in %s ...", i, id, pause)
+					if opts.verbose {
+						log.Printf("retry %d for %s in %s ...", i, id, pause)
+					}
 					time.Sleep(pause)
 				} else {
 					ok = true
@@ -73,12 +76,13 @@ func main() {
 	numWorker := flag.Int("w", runtime.NumCPU(), "number of workers")
 	size := flag.Int("b", 10000, "batch size")
 	verbose := flag.Bool("verbose", false, "be verbose")
-	version := flag.Bool("v", false, "prints current program version")
+	showVersion := flag.Bool("v", false, "prints current program version")
 
 	flag.Parse()
 
-	if *version {
+	if *showVersion {
 		fmt.Println(version)
+		os.Exit(0)
 	}
 
 	if flag.NArg() < 1 {
