@@ -26,3 +26,4 @@ _testmain.go
 /memcldj
 memcldj*.deb
 memcldj*.rpm
+packaging/deb/memcldj/usr
