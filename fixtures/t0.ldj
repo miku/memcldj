@@ -4,3 +4,5 @@
 {"id": "4", "value": "misc"}
 {"id": 5, "value": "game"}
 {"id": 6, "value": "hook"}
+{"id": 7, "x": {"y": {"z": "nested values are ok"}}}
+{"id": 8.1, "x": {"y": {"z": "but please never use floats as ids"}}}
