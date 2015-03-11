@@ -12,6 +12,21 @@ Installation
 
 Or install via [debian or rpm packages](https://github.com/miku/memcldj/releases).
 
+Usage
+-----
+
+    $ memcldj
+    Usage of memcldj:
+      -addr="127.0.0.1:11211": hostport of memcache
+      -b=10000: batch size
+      -key="id": document key to use a id in dot notation
+      -retry=10: retry set this many times
+      -verbose=false: be verbose
+      -w=4: number of workers
+
+Example
+-------
+
 Example: Given a file with docs like
 
     $ cat file.ldj
@@ -24,17 +39,8 @@ Running:
 
 Will set two keys, 2 and 3 in memcache with the corresponding JSON docs as values.
 
-    $ memcldj
-    Usage of memcldj:
-      -addr="127.0.0.1:11211": hostport of memcache
-      -b=10000: batch size
-      -key="id": document key to use a id in dot notation
-      -retry=10: retry set this many times
-      -verbose=false: be verbose
-      -w=4: number of workers
-
-Example:
+Example with more options:
 
     $ memcldj -w 2 -key "id" -verbose -addr 127.0.0.1:12345 fixtures/t0.ldj
 
-If there's any error (i/o, timeout), memcldj will retry with exponential backoff.
+If there's any error (i/o, timeout), memcldj will retry a few times with exponential backoff before giving up.
