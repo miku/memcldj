@@ -2,7 +2,7 @@ README
 ======
 
 Load JSON blobs into memcache or memcachedb quickly. Given an [LDJ](http://en.wikipedia.org/wiki/Line_Delimited_JSON)
-file, use a value from inside a JSON document as key and set it's value
+file, use a value from inside a JSON document as key and set its value
 to the JSON blob.
 
 Example: Given a file with docs like
