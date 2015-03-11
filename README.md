@@ -5,15 +5,22 @@ Load JSON blobs into memcache or memcachedb quickly. Given an [LDJ](http://en.wi
 file, use a value from inside a JSON document as key and set its value
 to the JSON blob.
 
+Installation
+------------
+
+    $ go get github.com/miku/memcldj/cmd/memcldj
+
+Or install via [debian or rpm packages](https://github.com/miku/memcldj/releases).
+
 Example: Given a file with docs like
 
-	$ cat file.ldj
-	{"x": 2, "y": 4}
-	{"x": 3, "y": 9}
+    $ cat file.ldj
+    {"x": 2, "y": 4}
+    {"x": 3, "y": 9}
 
 Running:
 
-	$ memcldj -key "x" file.ldj
+    $ memcldj -key "x" file.ldj
 
 Will set two keys, 2 and 3 in memcache with the corresponding JSON docs as values.
 
