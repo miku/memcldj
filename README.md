@@ -32,14 +32,14 @@ Example
 Example: Given a file with docs like
 
     $ cat file.ldj
-    {"x": 2, "y": 4}
-    {"x": 3, "y": 9}
+    {"x": "a", "y": "A"}
+    {"x": "b", "y": "B"}
 
 Running:
 
     $ memcldj -key "x" file.ldj
 
-Will set two keys, 2 and 3 in memcache with the corresponding JSON docs as values.
+Will set two keys, "a" and "b" in memcache with the corresponding JSON docs as values.
 
 Example with more options:
 

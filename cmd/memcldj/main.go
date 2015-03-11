@@ -8,6 +8,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"reflect"
 	"runtime"
 	"sync"
 	"time"
@@ -41,10 +42,18 @@ func worker(queue chan []string, opts options, wg *sync.WaitGroup) {
 				log.Fatalf("key not found: %s", opts.key)
 			}
 			val := dst[opts.key]
-			if _, ok := val.(string); !ok {
-				log.Fatalf("id value is not a string: %+v", val)
+
+			var id string
+			switch val.(type) {
+			case string:
+				id = val.(string)
+			case int:
+				id = fmt.Sprintf("%d", val)
+			case float64:
+				id = fmt.Sprintf("%0d", int(val.(float64)))
+			default:
+				log.Fatalf("unsupported id value type: %v is a %v", val, reflect.TypeOf(val))
 			}
-			id := val.(string)
 
 			ok := false
 			var i uint
