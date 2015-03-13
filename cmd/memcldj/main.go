@@ -90,6 +90,8 @@ func main() {
 
 	flag.Parse()
 
+	runtime.GOMAXPROCS(*numWorker)
+
 	if *showVersion {
 		fmt.Println(version)
 		os.Exit(0)
@@ -108,6 +110,7 @@ func main() {
 		hostport: *hostport,
 		key:      *key,
 		retry:    uint(*retry),
+		verbose:  *verbose,
 	}
 
 	reader := bufio.NewReader(file)
