@@ -137,17 +137,23 @@ func main() {
 		batch = append(batch, line)
 		if i%*size == 0 {
 			if *verbose {
-				log.Printf("sent %d", i)
+				log.Printf("@%d", i)
 			}
-			queue <- batch
+			b := make([]string, len(batch))
+			copy(b, batch)
+			queue <- b
 			batch = batch[:0]
 		}
 		i++
 	}
-	queue <- batch
+	b := make([]string, len(batch))
+	copy(b, batch)
+	queue <- b
+
 	if *verbose {
-		log.Printf("sent %d", i)
+		log.Printf("@%d", i)
 	}
+
 	close(queue)
 	wg.Wait()
 }
