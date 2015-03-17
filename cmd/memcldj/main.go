@@ -26,11 +26,13 @@ type options struct {
 	key      string
 	retry    uint
 	verbose  bool
+	timeout  time.Duration
 }
 
 func worker(queue chan []string, opts options, wg *sync.WaitGroup) {
 	defer wg.Done()
 	mc := memcache.New(opts.hostport)
+	mc.Timeout = opts.timeout
 	for batch := range queue {
 		for _, line := range batch {
 			dst := make(map[string]interface{})
@@ -87,6 +89,7 @@ func main() {
 	size := flag.Int("b", 10000, "batch size")
 	verbose := flag.Bool("verbose", false, "be verbose")
 	showVersion := flag.Bool("v", false, "prints current program version")
+	timeout := flag.Duration("timeout", 10*time.Second, "client socket read/write timeout")
 
 	flag.Parse()
 
@@ -111,6 +114,7 @@ func main() {
 		key:      *key,
 		retry:    uint(*retry),
 		verbose:  *verbose,
+		timeout:  *timeout,
 	}
 
 	reader := bufio.NewReader(file)
