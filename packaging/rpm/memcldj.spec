@@ -1,6 +1,6 @@
 Summary:    Load/Set JSON from LDJ files into memcache.
 Name:       memcldj
-Version:    1.2.0
+Version:    1.3.0
 Release:    0
 License:    MIT
 BuildArch:  x86_64
@@ -46,6 +46,10 @@ rm -rf %{_topdir}/BUILD/%{name}
 
 
 %changelog
+* Mon Aug 10 2015 Martin Czygan
+- 1.3.0 release
+- add -z flag
+
 * Wed Mar 11 2015 Martin Czygan
 - 1.0.0 release
 - initial release
