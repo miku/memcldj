@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"compress/gzip"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -90,6 +91,7 @@ func main() {
 	verbose := flag.Bool("verbose", false, "be verbose")
 	showVersion := flag.Bool("v", false, "prints current program version")
 	timeout := flag.Duration("timeout", 10*time.Second, "client socket read/write timeout")
+	gzipped := flag.Bool("z", false, "unzip gz'd file on the fly")
 
 	flag.Parse()
 
@@ -118,6 +120,13 @@ func main() {
 	}
 
 	reader := bufio.NewReader(file)
+	if *gzipped {
+		zreader, err := gzip.NewReader(file)
+		if err != nil {
+			log.Fatal(err)
+		}
+		reader = bufio.NewReader(zreader)
+	}
 
 	queue := make(chan []string)
 	var wg sync.WaitGroup
